@@ -11,14 +11,6 @@ async function bootstrap() {
       'The IoT Monitoring API provides access to real-time data from IoT devices, enabling the monitoring and management of connected devices.',
     )
     .setVersion('1.0')
-    .addTag('cats')
-    .addSecurity('token', {
-      type: 'apiKey',
-      scheme: 'api_key',
-      in: 'header',
-      name: 'auth-token',
-    })
-    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
