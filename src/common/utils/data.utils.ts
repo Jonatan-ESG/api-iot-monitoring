@@ -25,7 +25,7 @@ export const getRandomLocation = () => {
   const randomCity = locations.city[getRandomNumber(0, locations.city.length - 1)];
   const randomLocation = locations.location[getRandomNumber(0, locations.location.length - 1)];
 
-  const randomAddress = `${randomEnterprise}, ${randomCity}, ${randomLocation}`;
+  const randomAddress = `${randomEnterprise}, ${randomCity.name}, ${randomLocation} | ${randomCity.lat},${randomCity.lng}`;
 
   return randomAddress;
 };
