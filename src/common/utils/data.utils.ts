@@ -29,7 +29,7 @@ export const getRandomLocation = () => {
 
   return randomAddress;
 };
-export const getRandomStatus = (isAlert: boolean) => (isAlert ? 'error' : status[getRandomNumber(0, 1)]);
+export const getRandomStatus = (isAlert: boolean) => (isAlert ? (Date.now() % 17 === 0 ? 'error' : 'warning') : 'normal');
 
 export const getRandomReliability = () => reliabilities[getRandomNumber(0, reliabilities.length - 1)];
 

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
-import { TemperatureEventModule } from './temperature_event/temperature_event.module';
+import { EventModule } from './event/event.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [ScheduleModule.forRoot(), TemperatureEventModule, ConfigModule.forRoot()],
+  imports: [ScheduleModule.forRoot(), EventModule, ConfigModule.forRoot()],
   controllers: [],
   providers: [],
 })
