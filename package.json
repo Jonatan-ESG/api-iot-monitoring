@@ -1,10 +1,10 @@
 {
   "name": "api-iot-monitorig",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "The IoT Monitoring API provides access to real-time data from IoT devices, enabling the monitoring and management of connected devices.",
+  "author": "Jonatan Sandoval",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
