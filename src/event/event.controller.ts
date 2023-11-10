@@ -5,16 +5,17 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './entities/event.entity';
-import { addMonths } from 'date-fns';
+import { addHours, addMonths, addSeconds, differenceInSeconds } from 'date-fns';
 import {
+  generateSensorsPool,
   getRandomAffectedEquipment,
   getRandomLocation,
   getRandomManufacturerAndModel,
   getRandomNumber,
   getRandomRegulations,
   getRandomReliability,
+  getRandomSensor,
   getRandomSensorDescription,
-  getRandomSensorId,
   getRandomSensorType,
   getRandomSensorValue,
   getRandomStatus,
@@ -22,23 +23,25 @@ import {
 import { FindAllEventDto } from './dto/find-all.dto';
 import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SearchDto } from 'src/common/dto/search.dto';
+import { Sensor } from 'src/common/data/sensor.interface';
 
 @ApiTags('Event')
 @Controller('event')
 export class EventController extends BaseController<Event, CreateEventDto, UpdateEventDto> {
+  sensorsPool: Sensor[] = [];
+
   constructor(private readonly temperatureEventService: EventService) {
     super(temperatureEventService);
+    this.sensorsPool = generateSensorsPool();
+    this.generateEvent();
   }
 
   @Cron(CronExpression.EVERY_SECOND)
-  public generateEvent() {
+  public async generateEvent() {
     try {
-      const { sensor_type: SensorType, unit_measure: Unit } = getRandomSensorType();
       const Alert = Date.now() % 13 == 0;
-      const SensorID = getRandomSensorId();
-      const Location = getRandomLocation();
+      const { SensorType, SensorId: SensorID, Unit, Manufacturer, Model, Location } = getRandomSensor(this.sensorsPool);
       const { value: Value, alarmThreshold: AlarmThreshold } = getRandomSensorValue(SensorType);
-      const { manufacturer: Manufacturer, model: Model } = getRandomManufacturerAndModel();
       const Description = getRandomSensorDescription(SensorType, Alert);
       const AffectedEquipment = getRandomAffectedEquipment(SensorType);
       const temperatureEvent = {
@@ -62,8 +65,7 @@ export class EventController extends BaseController<Event, CreateEventDto, Updat
         SampleRate: getRandomNumber(0, AlarmThreshold),
         MaintenanceSchedule: addMonths(new Date(), getRandomNumber(1, 12)),
       };
-
-      this.temperatureEventService.create(temperatureEvent);
+      await this.temperatureEventService.create(temperatureEvent);
     } catch (error) {
       this.constrollerErrorHandler(error);
     }

@@ -37,4 +37,12 @@ export class EventService extends BaseService<Event, CreateEventDto, UpdateEvent
       this.serviceErrorHandler(error);
     }
   }
+
+  async insertEvents(events: Event[]) {
+    try {
+      return await this.temperatureEventRepository.insert(events);
+    } catch (error) {
+      this.serviceErrorHandler(error);
+    }
+  }
 }

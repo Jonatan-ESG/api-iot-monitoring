@@ -3,21 +3,44 @@ import { locations } from '../data/locations';
 import { manufacturers } from '../data/manufacturers';
 import { regulations } from '../data/regulations';
 import { reliabilities } from '../data/reliabilities';
+import { Sensor } from '../data/sensor.interface';
 import { sensorPhrases } from '../data/sensor_phrases';
 import { status } from '../data/status';
 import { sensorTypes } from './../data/sensor_types';
 
+export const generateSensorsPool = () => {
+  const sensorPool: Sensor[] = [];
+  const numbers: number[] = Array.from({ length: 151 }, (_, index) => index + 100);
+  const letters: string[] = Array.from({ length: 26 }, (_, index) => String.fromCharCode('A'.charCodeAt(0) + index));
+  for (const number of numbers) {
+    for (const letter of letters) {
+      const { sensor_type: SensorType, unit_measure: Unit } = getRandomSensorType();
+      const { manufacturer: Manufacturer, model: Model } = getRandomManufacturerAndModel();
+      const Regulations = getRandomRegulations();
+      const Location = getRandomLocation();
+      const sensor: Sensor = {
+        SensorId: `${letter}${number}`,
+        SensorType,
+        Unit,
+        Manufacturer,
+        Model,
+        Regulations,
+        Location,
+      };
+      sensorPool.push(sensor);
+    }
+  }
+  return sensorPool;
+};
+
+export const getRandomSensor = (sensorPool: Sensor[]) => {
+  const sensorIndex = getRandomNumber(0, sensorPool.length - 1);
+  return sensorPool[sensorIndex];
+};
+
 export const getRandomSensorType = () => {
   const sensorTypeIndex = getRandomNumber(0, sensorTypes.length - 1);
   return sensorTypes[sensorTypeIndex];
-};
-
-export const getRandomSensorId = () => {
-  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const randomLetter = letters.charAt(getRandomNumber(0, letters.length - 1));
-  const randomNumber = getRandomNumber(100, 999);
-
-  return randomLetter + randomNumber.toString();
 };
 
 export const getRandomLocation = () => {
