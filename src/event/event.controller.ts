@@ -36,7 +36,7 @@ export class EventController extends BaseController<Event, CreateEventDto, Updat
     this.generateEvent();
   }
 
-  @Cron(CronExpression.EVERY_SECOND)
+  @Cron(CronExpression.EVERY_10_MINUTES)
   public async generateEvent() {
     try {
       const Alert = Date.now() % 13 == 0;
