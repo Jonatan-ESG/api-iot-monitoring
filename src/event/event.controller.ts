@@ -5,18 +5,15 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './entities/event.entity';
-import { addHours, addMonths, addSeconds, differenceInSeconds } from 'date-fns';
+import { addMonths } from 'date-fns';
 import {
   generateSensorsPool,
   getRandomAffectedEquipment,
-  getRandomLocation,
-  getRandomManufacturerAndModel,
   getRandomNumber,
   getRandomRegulations,
   getRandomReliability,
   getRandomSensor,
   getRandomSensorDescription,
-  getRandomSensorType,
   getRandomSensorValue,
   getRandomStatus,
 } from 'src/common/utils/data.utils';
